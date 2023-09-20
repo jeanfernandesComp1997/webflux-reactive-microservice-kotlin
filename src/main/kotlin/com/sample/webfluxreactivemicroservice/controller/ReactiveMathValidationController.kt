@@ -3,6 +3,7 @@ package com.sample.webfluxreactivemicroservice.controller
 import com.sample.webfluxreactivemicroservice.dto.MathSquareResponse
 import com.sample.webfluxreactivemicroservice.exception.InputValidationException
 import com.sample.webfluxreactivemicroservice.service.ReactiveMathService
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -37,5 +38,20 @@ class ReactiveMathValidationController(
             .flatMap {
                 mathService.findSquare(it)
             }
+    }
+
+    @GetMapping("square/{input}/assignment")
+    fun assignment(@PathVariable input: Int): Mono<ResponseEntity<MathSquareResponse>> {
+        return Mono.just(input)
+            .filter { it in 10..20 }
+            .flatMap {
+                mathService.findSquare(it)
+            }
+            .map {
+                ResponseEntity.ok(it)
+            }
+            .defaultIfEmpty(
+                ResponseEntity.badRequest().build()
+            )
     }
 }
