@@ -1,7 +1,5 @@
 package com.sample.webfluxreactivemicroservice.config
 
-import com.sample.webfluxreactivemicroservice.exception.InputValidationException
-import org.springframework.boot.autoconfigure.rsocket.RSocketProperties.Server
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.reactive.function.server.RequestPredicate
