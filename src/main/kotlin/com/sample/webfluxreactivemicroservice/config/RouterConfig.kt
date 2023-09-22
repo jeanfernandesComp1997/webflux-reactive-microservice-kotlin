@@ -4,6 +4,8 @@ import com.sample.webfluxreactivemicroservice.dto.InputFailedValidationResponse
 import com.sample.webfluxreactivemicroservice.exception.InputValidationException
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.web.reactive.function.server.RequestPredicate
+import org.springframework.web.reactive.function.server.RequestPredicates
 import org.springframework.web.reactive.function.server.RouterFunction
 import org.springframework.web.reactive.function.server.RouterFunctions
 import org.springframework.web.reactive.function.server.ServerRequest
@@ -27,7 +29,12 @@ class RouterConfig(
     private fun serverResponseRouterFunction(): RouterFunction<ServerResponse> {
         return RouterFunctions
             .route()
-            .GET("square/{input}", requestHandler::squareHandler)
+            .GET(
+                "square/{input}",
+                RequestPredicates.path("*/1?").or(RequestPredicates.path("*/20")),
+                requestHandler::squareHandler
+            )
+            .GET("square/{input}") { ServerResponse.badRequest().bodyValue("only 10-19 allowed") }
             .GET("table/{input}", requestHandler::tableHandler)
             .GET("table/{input}/stream", requestHandler::tableStreamHandler)
             .POST("multiply", requestHandler::multiplyHandler)
