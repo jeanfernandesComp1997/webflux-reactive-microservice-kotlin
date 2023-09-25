@@ -8,7 +8,7 @@ import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.bodyToMono
 import reactor.test.StepVerifier
 
-class Lec04HeadersTest : BaseTest() {
+class Lec08AttributesTest : BaseTest() {
 
     @Autowired
     private lateinit var webClient: WebClient
@@ -19,10 +19,8 @@ class Lec04HeadersTest : BaseTest() {
             .post()
             .uri("reactive-math/multiply")
             .bodyValue(buildRequest(7, 5))
+            .attribute("auth", "oauth")
             .header("someKey", "someValue")
-//            .headers {
-//                it.setBasicAuth("username", "password")
-//            }
             .retrieve()
             .bodyToMono<MathSquareResponse>()
             .doOnNext { println(it) }
